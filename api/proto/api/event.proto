@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package event;
+
+option go_package = "analytics-service/extra/api";
+import "google/api/annotations.proto";
+
+service Event {
+  rpc RegisterEvent(RegisterEventReq) returns (Empty) {
+    option (google.api.http) = { post: "/api/v1/register/event"; body: "*"; };
+  };
+}
+
+// from headers get ip which is the user id
+message RegisterEventReq {
+  string event_type = 1;
+}
+
+message Empty {}

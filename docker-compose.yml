@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  user-microservice-constructor:
+    build: ./
+    ports:
+      - 64000:64000
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    links:
+      - postgresql
+
+  postgresql:
+      restart: always
+      build: ./postgresql/
+      volumes:
+        - /var/lib/postgresql/data
+      ports:
+        - 5431:5432
+      healthcheck:
+        test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+        interval: 5s
+        timeout: 5s
+        retries: 5
+      environment:
+        POSTGRES_DB: users
+        POSTGRES_PASSWORD: *

@@ -1,0 +1,89 @@
+#services:
+#  - redis:latest
+#  - docker:dind
+#
+#stages:
+#  - build
+#  - release
+#  - dockerize
+#
+#variables:
+#  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+#  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
+#
+#.configure_ssh:
+#  before_script:
+#    - |
+#      mkdir -p /root/.ssh && \
+#      chmod 0700 /root/.ssh && \
+#      ssh-keyscan gitlab.tarology.me > /root/.ssh/known_hosts
+#      echo "${SSH_PRIVATE_KEY}" > /root/.ssh/id_rsa && \
+#      echo "${SSH_PUBLIC_KEY}" > /root/.ssh/id_rsa.pub && \
+#      chmod 600 /root/.ssh/id_rsa && \
+#      chmod 600 /root/.ssh/id_rsa.pub
+#      git config --global url.git@gitlab.tarology.me:.insteadOf https://gitlab.tarology.me/
+#
+#build:
+#  stage: build
+#  image: golang:1.17
+#  tags: ["docker"]
+#  extends: .configure_ssh
+#  script:
+#    - export GOPRIVATE="gitlab.tarology.me"
+#    - go mod download
+#    - mkdir ./bin
+#    - mkdir ./bin/config/ && cp ./config/public_config.yaml ./bin/config/
+#    - mkdir /user-service
+#    - CGO_ENABLED=0 GOOS=linux go build -a -installsuffix nocgo -o /user-service ./cmd/app/main.go
+#
+#    - docker stop /user || true
+#    - docker rm /user || true
+#  artifacts:
+#    paths:
+#      - bin/
+#
+#.docker_login:
+#  before_script:
+#    - docker login $CI_REGISTRY_IMAGE -u deployer -p $REGISTRY_TOKEN
+#
+#image: docker:latest
+#
+#release:
+#  stage: release
+#  tags: ["docker"]
+##  extends: .docker_login
+#  script:
+#    - echo $CI_REGISTRY_IMAGE
+#    - docker login $CI_REGISTRY_IMAGE -u deployer -p $REGISTRY_TOKEN
+#    - docker build --pull -t $CONTAINER_RELEASE_IMAGE .
+#    - docker push $CONTAINER_RELEASE_IMAGE
+#
+#dockerize:
+#  stage: dockerize
+#  tags: ["shell"]
+##  extends: .docker_login
+#  script:
+#    - docker login $CI_REGISTRY_IMAGE -u deployer -p $REGISTRY_TOKEN
+#    - docker stop /user || true
+#    - docker rm /user || true
+#    - docker pull $CONTAINER_RELEASE_IMAGE
+#    - docker run -p 65000:65000 -d --name user --restart unless-stopped $CONTAINER_RELEASE_IMAGE
+#
+#services:
+#  - redis:latest
+
+stages:
+  - deploy
+
+deploy-image:
+  stage: deploy
+  script:
+    - sudo docker stop /user || true
+
+    - sudo docker rm /user || true
+
+    - sudo docker build -t user:latest .
+
+    - sudo docker run -p 65000:65001 -d --name user --restart unless-stopped user:latest
+  tags:
+    - shell

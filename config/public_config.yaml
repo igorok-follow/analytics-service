@@ -1,0 +1,17 @@
+server:
+  name: "analytics-service"
+  host: "localhost"
+  port: ":65000"
+
+gateway:
+  host: "localhost"
+  port: ":65001"
+
+logger:
+  log_level: "debug"
+
+analytics:
+  api_key: ""
+
+tracing:
+  jaeger_uri: "http://addr:14268/api/traces"
