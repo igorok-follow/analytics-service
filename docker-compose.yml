@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  user-microservice-constructor:
+  analytics-service:
     build: ./
     ports:
       - 64000:64000
