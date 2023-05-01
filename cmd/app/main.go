@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/igorok-follow/analytics-server/app"
+	"github.com/igorok-follow/analytics-server/tools/location_generator"
 	"io/ioutil"
 	"log"
 
@@ -27,12 +28,12 @@ func init() {
 func main() {
 	flag.Parse()
 
-	//tools.GenerateLocations("http://localhost:65000", "user-service")
-
 	config, err := getConfig(configName)
 	if err != nil {
 		log.Printf("package main: config error \n%v", err)
 	}
+
+	location_generator.GenerateLocations("http://localhost:65001", config.Server.Name)
 
 	app.Run(config)
 }

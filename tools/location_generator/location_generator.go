@@ -24,7 +24,7 @@ var (
 		"delete",
 		"put",
 	}
-	protoPath = "../../api"
+	protoPath = "./api"
 )
 
 func GenerateLocations(proxyPass, serviceName string) {
@@ -34,7 +34,7 @@ func GenerateLocations(proxyPass, serviceName string) {
 	}
 
 	var f *os.File
-	if f, err = os.Create("../../location/" + serviceName + ".include"); err != nil {
+	if f, err = os.Create("./location/" + serviceName + ".include"); err != nil {
 		log.Fatalf("create file location error: %v", err)
 	}
 	defer func(f *os.File) {

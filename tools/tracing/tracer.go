@@ -1,8 +1,10 @@
 package tracing
 
 import (
+	"context"
 	"fmt"
 	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/jaeger"
 	"go.opentelemetry.io/otel/sdk/resource"
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
@@ -10,6 +12,26 @@ import (
 	"go.opentelemetry.io/otel/trace"
 	"log"
 )
+
+func SpanFromContext(
+	ctx context.Context,
+	tr trace.Tracer,
+	instrumentationName,
+	spanName string,
+	kv ...attribute.KeyValue,
+) (context.Context, trace.Span) {
+	var (
+		span = trace.SpanFromContext(ctx)
+	)
+
+	for _, k := range kv {
+		span.SetAttributes(k)
+	}
+
+	ctx, span = tr.Start(ctx, instrumentationName+": "+spanName)
+
+	return ctx, span
+}
 
 func InitTracer(jaegerURL string, serviceName string) (trace.Tracer, error) {
 	log.Println(jaegerURL, serviceName)

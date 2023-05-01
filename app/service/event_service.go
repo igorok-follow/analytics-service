@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"github.com/igorok-follow/analytics-server/app/models"
 	context_tools "github.com/igorok-follow/analytics-server/tools/context"
+	"github.com/igorok-follow/analytics-server/tools/metadata"
+	"github.com/igorok-follow/analytics-server/tools/tracing"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 	"log"
-	"strconv"
 	"time"
 )
 
@@ -25,17 +26,26 @@ func NewEventService(
 }
 
 func (e *Event) RegisterEvent(ctx context.Context, in *models.Event) error {
-	span := trace.SpanFromContext(ctx)
-	// разобраться с object атрибутами
-	span.AddEvent("Service: "+context_tools.ExtractGRPCFullMethod(ctx), trace.WithAttributes(
-		attribute.String("type", in.EventType),
-		attribute.String("time", strconv.FormatInt(in.Unix, 10)),
-	))
+	var span trace.Span
+	ctx, span = tracing.SpanFromContext(
+		ctx,
+		e.deps.Tracer,
+		"service",
+		context_tools.ExtractGRPCFullMethod(ctx),
+		attribute.KeyValue{
+			Key:   "event_type",
+			Value: attribute.StringValue(in.EventType),
+		},
+		attribute.KeyValue{
+			Key:   "ip",
+			Value: attribute.StringValue(metadata.ExtractRemoteAddress(ctx)),
+		},
+	)
 	defer span.End()
 
 	log.Println(time.Now().UTC().Format("2006-01-02 03:04:05"))
 	fmt.Println("grpc method:", context_tools.ExtractGRPCFullMethod(ctx), "request:", in)
-	
+
 	e.deps.EventHandler.Add(in)
 	//if err != nil {
 	//	err := errors.New("test internal error")

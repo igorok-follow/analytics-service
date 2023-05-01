@@ -21,7 +21,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// from headers get ip which is the user id
 type RegisterEventReq struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

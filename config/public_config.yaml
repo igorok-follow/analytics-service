@@ -9,9 +9,3 @@ gateway:
 
 logger:
   log_level: "debug"
-
-analytics:
-  api_key: ""
-
-tracing:
-  jaeger_uri: "http://addr:14268/api/traces"

@@ -9,4 +9,3 @@ gateway:
 
 logger:
   log_level: "debug"
-
