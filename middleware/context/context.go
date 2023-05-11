@@ -2,8 +2,8 @@ package context
 
 import (
 	"context"
-	context_tools "github.com/igorok-follow/analytics-server/tools/context"
-	"github.com/igorok-follow/analytics-server/tools/metadata"
+	context_tools "github.com/igorok-follow/analytics-service/tools/context"
+	"github.com/igorok-follow/analytics-service/tools/metadata"
 	"google.golang.org/grpc"
 	"path"
 )

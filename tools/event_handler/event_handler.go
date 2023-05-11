@@ -1,9 +1,10 @@
 package event_handler
 
 import (
+	"errors"
 	"fmt"
-	"github.com/igorok-follow/analytics-server/app/models"
-	"github.com/igorok-follow/analytics-server/tools/request"
+	"github.com/igorok-follow/analytics-service/app/models"
+	"github.com/igorok-follow/analytics-service/tools/request"
 )
 
 type EventHandler struct {
@@ -25,8 +26,15 @@ func (e *EventHandler) Run() {
 	go e.Resend()
 }
 
-func (e *EventHandler) Add(event *models.Event) {
-	e.Queue <- event
+func (e *EventHandler) Add(event *models.Event) error {
+	select {
+	case e.Queue <- event:
+		break
+	default:
+		return errors.New("queue is crowded")
+	}
+
+	return nil
 }
 
 func (e *EventHandler) Send() {

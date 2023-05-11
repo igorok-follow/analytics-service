@@ -2,13 +2,13 @@ package endpoint
 
 import (
 	"context"
-	"github.com/igorok-follow/analytics-server/app/models"
-	"github.com/igorok-follow/analytics-server/app/service"
-	"github.com/igorok-follow/analytics-server/extra/api"
-	context_tools "github.com/igorok-follow/analytics-server/tools/context"
-	"github.com/igorok-follow/analytics-server/tools/metadata"
-	status_tools "github.com/igorok-follow/analytics-server/tools/status"
-	"github.com/igorok-follow/analytics-server/tools/tracing"
+	"github.com/igorok-follow/analytics-service/app/models"
+	"github.com/igorok-follow/analytics-service/app/service"
+	"github.com/igorok-follow/analytics-service/extra/api"
+	context_tools "github.com/igorok-follow/analytics-service/tools/context"
+	"github.com/igorok-follow/analytics-service/tools/metadata"
+	status_tools "github.com/igorok-follow/analytics-service/tools/status"
+	"github.com/igorok-follow/analytics-service/tools/tracing"
 	"go.opentelemetry.io/otel/trace"
 	"google.golang.org/grpc/codes"
 	"time"
@@ -27,8 +27,6 @@ func NewEventEndpoint(services *service.Container, tracer trace.Tracer) *Event {
 }
 
 func (e *Event) RegisterEvent(ctx context.Context, in *api.RegisterEventReq) (*api.Empty, error) {
-	// validate...
-
 	var span trace.Span
 	ctx, span = tracing.SpanFromContext(
 		ctx,

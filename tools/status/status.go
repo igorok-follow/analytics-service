@@ -2,7 +2,7 @@ package status
 
 import (
 	"context"
-	"github.com/igorok-follow/analytics-server/tools/tracing"
+	"github.com/igorok-follow/analytics-service/tools/tracing"
 	otel_codes "go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 	grpc_codes "google.golang.org/grpc/codes"

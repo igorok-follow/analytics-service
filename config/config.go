@@ -24,7 +24,8 @@ type Logger struct {
 }
 
 type Analytics struct {
-	ApiKey string `yaml:"api_key"`
+	ApiKey        string `yaml:"api_key"`
+	EventQueueLen int    `yaml:"event_queue_len"`
 }
 
 type Tracing struct {

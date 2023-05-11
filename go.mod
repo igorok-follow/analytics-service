@@ -1,10 +1,9 @@
-module github.com/igorok-follow/analytics-server
+module github.com/igorok-follow/analytics-service
 
 go 1.16
 
 require (
 	github.com/daviddengcn/go-colortext v1.0.0
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/gorilla/securecookie v1.1.1
@@ -17,7 +16,6 @@ require (
 	go.opentelemetry.io/otel/exporters/jaeger v1.15.0
 	go.opentelemetry.io/otel/sdk v1.15.0
 	go.opentelemetry.io/otel/trace v1.15.0
-	golang.org/x/crypto v0.1.0
 	google.golang.org/genproto v0.0.0-20230223222841-637eb2293923
 	google.golang.org/grpc v1.53.0
 	google.golang.org/protobuf v1.28.1

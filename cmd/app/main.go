@@ -2,14 +2,12 @@ package main
 
 import (
 	"flag"
-	"github.com/igorok-follow/analytics-server/app"
-	"github.com/igorok-follow/analytics-server/tools/location_generator"
+	"github.com/igorok-follow/analytics-service/app"
+	"github.com/igorok-follow/analytics-service/config"
+	"github.com/igorok-follow/analytics-service/tools/location_generator"
+	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"log"
-
-	"gopkg.in/yaml.v3"
-
-	"github.com/igorok-follow/analytics-server/config"
 )
 
 const defaultConfigPath = "./config/"

@@ -38,7 +38,6 @@ func GenerateLocations(proxyPass, serviceName string) {
 		log.Fatalf("create file location error: %v", err)
 	}
 	defer func(f *os.File) {
-		err = f.Close()
 		if err != nil {
 			log.Fatalf("close file error: %v", err)
 		}
@@ -60,7 +59,6 @@ func readProtoFiles(dir os.DirEntry, f *os.File, proxyPass string) {
 	if err != nil {
 		log.Fatalf("read sources dir error: %v", err)
 	}
-	log.Println(sourcesDir)
 
 	for _, source := range sourcesDir {
 		var dirs []os.DirEntry
@@ -70,15 +68,18 @@ func readProtoFiles(dir os.DirEntry, f *os.File, proxyPass string) {
 		}
 
 		for _, sourceDir := range dirs {
-			var data []byte
-			if data, err = os.ReadFile(
-				protoPath + "/" + dir.Name() + "/" + source.Name() + "/" + sourceDir.Name(),
-			); err != nil {
-				log.Printf("read file content error %v", err)
-				continue
-			}
+			if !sourceDir.IsDir() {
+				var data []byte
+				path := protoPath + "/" + dir.Name() + "/" + source.Name() + "/" + sourceDir.Name()
+				if data, err = os.ReadFile(
+					path,
+				); err != nil {
+					log.Printf("read file content error %v", err)
+					continue
+				}
 
-			readFields(data, f, proxyPass)
+				readFields(data, f, proxyPass)
+			}
 		}
 	}
 }
