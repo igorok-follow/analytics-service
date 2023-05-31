@@ -15,6 +15,7 @@ analytics:
 
 tracing:
   jaeger_uri: ""
+  event_queue_len: 3000
 
 database:
   uri: "uri"

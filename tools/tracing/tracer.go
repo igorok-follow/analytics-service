@@ -10,7 +10,6 @@ import (
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.12.0"
 	"go.opentelemetry.io/otel/trace"
-	"log"
 )
 
 func SpanFromContext(
@@ -34,7 +33,6 @@ func SpanFromContext(
 }
 
 func InitTracer(jaegerURL string, serviceName string) (trace.Tracer, error) {
-	log.Println(jaegerURL, serviceName)
 	exporter, err := NewJaegerExporter(jaegerURL)
 	if err != nil {
 		return nil, fmt.Errorf("initialize exporter: %w", err)

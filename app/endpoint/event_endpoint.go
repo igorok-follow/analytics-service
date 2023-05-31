@@ -27,8 +27,6 @@ func NewEventEndpoint(services *service.Container, tracer trace.Tracer) *Event {
 }
 
 func (e *Event) RegisterEvent(ctx context.Context, in *api.RegisterEventReq) (*api.Empty, error) {
-	// validate...
-
 	var span trace.Span
 	ctx, span = tracing.SpanFromContext(
 		ctx,

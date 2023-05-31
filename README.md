@@ -14,12 +14,12 @@ http port: 65001
     go run ./cmd/app/main.go
     ```
     
-**Pb's generate**
+**Pb's generate && swagger json generate**
     ```
     make generate-pb
     ```
 
-**Generate swagger docs**
+**Generate html swagger docs**
     ```
     make generate-docs
     ```
