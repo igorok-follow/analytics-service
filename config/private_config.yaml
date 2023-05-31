@@ -9,3 +9,12 @@ gateway:
 
 logger:
   log_level: "debug"
+
+analytics:
+  api_key: ""
+
+tracing:
+  jaeger_uri: ""
+
+database:
+  uri: "uri"

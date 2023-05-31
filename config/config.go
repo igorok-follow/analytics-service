@@ -6,6 +6,7 @@ type Config struct {
 	Gateway   *Gateway   `yaml:"gateway"`
 	Analytics *Analytics `yaml:"analytics"`
 	Tracing   *Tracing   `yaml:"tracing"`
+	Database  *Database  `yaml:"database"`
 }
 
 type Server struct {
@@ -29,4 +30,8 @@ type Analytics struct {
 
 type Tracing struct {
 	JaegerUri string `yaml:"jaeger_uri"`
+}
+
+type Database struct {
+	Uri string `yaml:"uri"`
 }

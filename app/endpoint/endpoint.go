@@ -2,8 +2,8 @@ package endpoint
 
 import (
 	"context"
-	"github.com/igorok-follow/analytics-server/app/service"
-	"github.com/igorok-follow/analytics-server/extra/api"
+	"github.com/igorok-follow/analytics-service/app/service"
+	"github.com/igorok-follow/analytics-service/extra/api"
 )
 
 type Container struct {

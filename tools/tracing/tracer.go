@@ -45,7 +45,7 @@ func InitTracer(jaegerURL string, serviceName string) (trace.Tracer, error) {
 		return nil, fmt.Errorf("initialize provider: %w", err)
 	}
 
-	otel.SetTracerProvider(tp) // !!!!!!!!!!!
+	otel.SetTracerProvider(tp)
 
 	return tp.Tracer("main tracer"), nil
 }

@@ -2,13 +2,14 @@ package app
 
 import (
 	"context"
-	"github.com/igorok-follow/analytics-server/app/endpoint"
-	"github.com/igorok-follow/analytics-server/app/service"
-	context_middleware "github.com/igorok-follow/analytics-server/middleware/context"
-	recovery_middleware "github.com/igorok-follow/analytics-server/middleware/recovery"
-	"github.com/igorok-follow/analytics-server/tools/event_handler"
-	"github.com/igorok-follow/analytics-server/tools/logger"
-	"github.com/igorok-follow/analytics-server/tools/tracing"
+	"github.com/igorok-follow/analytics-service/app/endpoint"
+	"github.com/igorok-follow/analytics-service/app/repository"
+	"github.com/igorok-follow/analytics-service/app/service"
+	context_middleware "github.com/igorok-follow/analytics-service/middleware/context"
+	recovery_middleware "github.com/igorok-follow/analytics-service/middleware/recovery"
+	"github.com/igorok-follow/analytics-service/tools/event_handler"
+	"github.com/igorok-follow/analytics-service/tools/logger"
+	"github.com/igorok-follow/analytics-service/tools/tracing"
 	"github.com/rs/cors"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -19,36 +20,22 @@ import (
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 
-	"github.com/igorok-follow/analytics-server/config"
-	"github.com/igorok-follow/analytics-server/extra/api"
+	"github.com/igorok-follow/analytics-service/config"
+	"github.com/igorok-follow/analytics-service/extra/api"
 )
 
 func Run(config *config.Config) {
-	//conn := repository2.NewConnection(config.Database.Uri)
-	//err := conn.Open()
-	//if err != nil {
-	//	logger.FatalError("Configure connection error", err)
-	//}
-	//
-	//defer conn.DB.Close()
-	//
-	//logger.Debug("Connected to database")
-	//
-	//repositories := repository2.NewRepositories(conn.DB)
-	//
-	//hasher := helpers.NewHasher()
-	//
-	//jwtManager, err := helpers.NewJWT(config.Token.SecretKey, config.Token.ExpiredAt)
-	//if err != nil {
-	//	logger.Error("JWT manager error", err)
-	//}
-	//
-	//redisClient, err := repository2.NewRedisClient(config.Redis)
-	//if err != nil {
-	//	logger.FatalError("Configure redis connection error", err)
-	//}
+	conn := repository.NewConnection(config.Database.Uri)
+	err := conn.Open()
+	if err != nil {
+		logger.FatalError("Configure connection error", err)
+	}
 
-	//defer redisClient.Close()
+	defer conn.DB.Close()
+
+	logger.Debug("Connected to database")
+
+	repositories := repository.NewRepositoryContainer(conn.DB)
 
 	tracer, err := tracing.InitTracer(config.Tracing.JaegerUri, config.Server.Name)
 	if err != nil {
@@ -61,6 +48,7 @@ func Run(config *config.Config) {
 	deps := &service.Dependencies{
 		EventHandler: eventHandler,
 		Tracer:       tracer,
+		Repositories: repositories,
 	}
 	services := service.NewServices(deps)
 	endpoints := endpoint.NewEndpointContainer(services, deps)

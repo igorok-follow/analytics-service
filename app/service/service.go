@@ -3,8 +3,9 @@ package service
 import (
 	"context"
 	"github.com/go-redis/redis"
-	"github.com/igorok-follow/analytics-server/app/models"
-	"github.com/igorok-follow/analytics-server/tools/event_handler"
+	"github.com/igorok-follow/analytics-service/app/models"
+	"github.com/igorok-follow/analytics-service/app/repository"
+	"github.com/igorok-follow/analytics-service/tools/event_handler"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -28,4 +29,5 @@ type Dependencies struct {
 	Redis        *redis.Client
 	EventHandler *event_handler.EventHandler
 	Tracer       trace.Tracer
+	Repositories *repository.Container
 }

@@ -2,8 +2,8 @@ package event_handler
 
 import (
 	"fmt"
-	"github.com/igorok-follow/analytics-server/app/models"
-	"github.com/igorok-follow/analytics-server/tools/request"
+	"github.com/igorok-follow/analytics-service/app/models"
+	"github.com/igorok-follow/analytics-service/tools/request"
 )
 
 type EventHandler struct {
